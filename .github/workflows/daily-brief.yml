@@ -55,6 +55,9 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
           BRIEF_RECIPIENT: ${{ secrets.BRIEF_RECIPIENT }}
+          # Simple email delivery via Gmail App Password (no OAuth needed):
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
           NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
         run: python -m morning_brief.main run --email
 

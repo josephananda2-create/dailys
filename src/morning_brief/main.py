@@ -207,12 +207,23 @@ def cmd_test(args):
     except Exception as exc:  # noqa: BLE001
         results.append(ConnectorStatus("Notion", False, str(exc)))
 
-    # Gmail
+    # Email (SMTP App Password preferred, else Gmail API)
+    try:
+        from .connectors import smtp_mail
+        if smtp_mail.configured():
+            results.append(ConnectorStatus("Email (SMTP)", True, f"app password set, to {env('BRIEF_RECIPIENT') or env('SMTP_USER')}"))
+        else:
+            ok = gmail_conn.available()
+            results.append(ConnectorStatus("Email (Gmail API)", ok, "authenticated" if ok else "not configured (set SMTP_APP_PASSWORD for simple email)"))
+    except Exception as exc:  # noqa: BLE001
+        results.append(ConnectorStatus("Email", False, str(exc)))
+
+    # Gmail inbox scan (OAuth only)
     try:
         ok = gmail_conn.available()
-        results.append(ConnectorStatus("Gmail", ok, "authenticated" if ok else "not configured"))
+        results.append(ConnectorStatus("Gmail inbox scan", ok, "authenticated" if ok else "not configured (optional, OAuth)"))
     except Exception as exc:  # noqa: BLE001
-        results.append(ConnectorStatus("Gmail", False, str(exc)))
+        results.append(ConnectorStatus("Gmail inbox scan", False, str(exc)))
 
     # Calendar
     try:

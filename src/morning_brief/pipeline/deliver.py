@@ -35,6 +35,10 @@ def save_to_notion(markdown: str, n_sections: int, n_items: int) -> str | None:
 def email_brief(markdown: str, cfg: Config) -> bool:
     html = _markdown_to_html(markdown)
     subject = f"☀️ Morning Brief — {today_str()}"
+    # Prefer the simple SMTP App Password path; fall back to the Gmail API.
+    from ..connectors import smtp_mail
+    if smtp_mail.configured():
+        return smtp_mail.send_email(subject, html)
     return gmail.send_email(subject, html)
 
 
