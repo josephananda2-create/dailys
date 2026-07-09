@@ -30,8 +30,9 @@ def _flatten_watchlist(cfg: Config) -> list[tuple[str, str]]:
     pairs = []
     for w in cfg.watchlist:
         client = w.get("client", "")
-        for b in (w.get("brands", []) + w.get("competitors", [])):
-            pairs.append((b, client))
+        for b in (list(w.get("brands", []) or []) + list(w.get("competitors", []) or [])):
+            # Coerce to str: YAML may parse bare tokens like YES/NO/ON as bools.
+            pairs.append((str(b), client))
     return pairs
 
 

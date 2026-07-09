@@ -55,7 +55,7 @@ def _cite(item: Item) -> str:
 
 def _item_line(item: Item) -> str:
     flag = " _(update)_" if item.is_update else ""
-    wl = f" — _watchlist: {', '.join(item.watchlist_hits)}_" if item.watchlist_hits else ""
+    wl = f" — _watchlist: {', '.join(str(h) for h in item.watchlist_hits)}_" if item.watchlist_hits else ""
     snippet = item.summary.strip()
     body = f" {snippet}" if snippet else ""
     return f"- **{item.title.strip()}**{flag} —{body} {_cite(item)}{wl}"

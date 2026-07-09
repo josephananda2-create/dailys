@@ -81,7 +81,7 @@ def load_config(root: str | Path = ".") -> Config:
                 reliability=int(s.get("reliability", 5)),
                 frequency=str(s.get("frequency", "daily")),
                 active=bool(s.get("active", True)),
-                tags=list(s.get("tags", []) or []),
+                tags=[str(t) for t in (s.get("tags", []) or [])],
                 notes=str(s.get("notes", "")),
             )
         )

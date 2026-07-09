@@ -127,7 +127,7 @@ watchlist:
   - client: "Telco client"
     category: telecommunications
     brands: [Maxis, CelcomDigi, U Mobile]
-    competitors: [YES, unifi]
+    competitors: ["YES", unifi]   # quote "YES": bare YES is a YAML boolean (true)
   - client: "Bank client"
     category: banking_and_finance
     brands: [Maybank, CIMB, RHB, Public Bank]

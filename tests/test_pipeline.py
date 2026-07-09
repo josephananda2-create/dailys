@@ -73,6 +73,20 @@ def test_watchlist_and_category_boost_scores():
     assert "watchlist_match" in branded_scored.score_breakdown
 
 
+def test_watchlist_with_yaml_boolean_brand_does_not_crash():
+    # Regression: a bare 'YES' in YAML parses to bool True; must not crash rendering.
+    cfg = make_cfg()
+    cfg.watchlist = [{"client": "Telco", "category": "telecommunications",
+                      "brands": [True], "competitors": []}]
+    from morning_brief.pipeline.score import _flatten_watchlist
+    pairs = _flatten_watchlist(cfg)
+    assert all(isinstance(b, str) for b, _ in pairs)
+    item = _item("true story about something", reliability=9)
+    ranked = score.score_items([item], cfg)  # must not raise
+    from morning_brief.pipeline.generate import _item_line
+    _item_line(ranked[0]) if ranked else None  # must not raise
+
+
 def test_old_items_filtered_by_max_age():
     cfg = make_cfg()
     old = _item("Ancient news", reliability=9, published=datetime.now(timezone.utc) - timedelta(hours=200))
