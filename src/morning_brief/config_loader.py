@@ -153,5 +153,9 @@ def validate_sources(root: str | Path = ".") -> ValidationResult:
 
 
 def env(key: str, default: str | None = None) -> str | None:
-    val = os.getenv(key, default)
-    return val.strip() if isinstance(val, str) else val
+    """Read an env var. Treat empty/whitespace-only as unset (GitHub passes unset
+    secrets as empty strings), so the default applies in that case too."""
+    val = os.getenv(key)
+    if val is None or val.strip() == "":
+        return default
+    return val.strip()

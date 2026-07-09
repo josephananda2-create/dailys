@@ -167,9 +167,9 @@ sources:
     priority: 8
     reliability: 10
     frequency: hourly
-    active: true
+    active: false   # Reuters discontinued this public RSS feed (DNS fails). Paused.
     tags: [economics, politics, geopolitics, markets]
-    notes: "Wire-service reliability for world business & politics."
+    notes: "Wire-service reliability. Public RSS retired — replace url with a working feed then set active: true."
 
   - name: BBC Business
     type: rss

@@ -102,7 +102,7 @@ def render_with_llm(context: dict) -> str | None:
         log.warning("anthropic not installed; run `pip install .[llm]`.")
         return None
 
-    model = env("BRIEF_MODEL", "claude-sonnet-5")
+    model = env("BRIEF_MODEL") or "claude-sonnet-5"
     payload = json.dumps(context, ensure_ascii=False, indent=1)
     # Keep payload bounded to control cost/latency.
     if len(payload) > 120_000:
