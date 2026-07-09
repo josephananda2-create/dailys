@@ -1,0 +1,134 @@
+# =============================================================================
+# categories.yaml — briefing categories + client/competitor watchlist.
+#
+# Each category maps to one of the 8 newsletter sections (see `section`) and
+# carries keyword hints used to route/boost items during scoring.
+# Add clients under `watchlist` so their brand mentions get an extra boost.
+# =============================================================================
+
+# Which newsletter section each category feeds into.
+# sections: advertising | strategy | world | malaysia | client_category | ai | sports | day_ahead
+categories:
+  advertising:
+    section: advertising
+    keywords: [advertising, agency, campaign, adland, media buying, creative, awards, effie, cannes, pitch]
+  strategy:
+    section: strategy
+    keywords: [strategy, brand building, effectiveness, planning, brief, positioning, behavioural science, semiotics]
+
+  global_economy:
+    section: world
+    keywords: [economy, gdp, inflation, recession, trade, imf, world bank]
+  global_politics:
+    section: world
+    keywords: [election, government, geopolitics, sanctions, diplomacy, conflict]
+  global_markets:
+    section: world
+    keywords: [markets, stocks, bonds, currency, fed, rates, commodities, oil price]
+
+  malaysia_economy:
+    section: malaysia
+    keywords: [malaysia, ringgit, bnm, budget, gdp, subsidy, sst, epf]
+  malaysia_politics:
+    section: malaysia
+    keywords: [malaysia, anwar, parliament, madani, pakatan, policy, gst, cabinet]
+  malaysia_consumer_sentiment:
+    section: malaysia
+    keywords: [malaysia, cost of living, consumer, spending, prices, sentiment, raya, wages]
+
+  automotive:
+    section: client_category
+    keywords: [car, automotive, vehicle, oem, dealership, proton, perodua]
+  evs:
+    section: client_category
+    keywords: [ev, electric vehicle, charging, battery, byd, tesla]
+  phevs:
+    section: client_category
+    keywords: [phev, plug-in hybrid, hybrid]
+  fmcg:
+    section: client_category
+    keywords: [fmcg, cpg, consumer goods, nestle, unilever, retail, grocery, packaged]
+  oil_and_gas:
+    section: client_category
+    keywords: [oil, gas, petronas, upstream, downstream, lng, refinery]
+  petrol_retail:
+    section: client_category
+    keywords: [petrol, fuel retail, service station, shell, petronas, bhpetrol, caltex]
+  energy:
+    section: client_category
+    keywords: [energy, electricity, tnb, grid, renewable, solar, power]
+  sustainability:
+    section: client_category
+    keywords: [sustainability, esg, net zero, carbon, emissions, green, circular]
+  alcohol:
+    section: client_category
+    keywords: [alcohol, beer, spirits, carlsberg, heineken, guinness, whisky]
+  entertainment:
+    section: client_category
+    keywords: [entertainment, streaming, film, music, gaming, ott, box office]
+  telecommunications:
+    section: client_category
+    keywords: [telco, telecommunications, 5g, maxis, celcomdigi, u mobile, broadband]
+  banking_and_finance:
+    section: client_category
+    keywords: [bank, banking, finance, fintech, maybank, cimb, payments, insurance, takaful]
+  education:
+    section: client_category
+    keywords: [education, university, edtech, school, tuition, upskilling]
+  property_and_destinations:
+    section: client_category
+    keywords: [property, real estate, tourism, destination, hospitality, hotel, mall]
+  consumer_technology:
+    section: client_category
+    keywords: [consumer tech, smartphone, gadget, wearable, apple, samsung]
+
+  ai:
+    section: ai
+    keywords: [ai, artificial intelligence, llm, model, agent, openai, anthropic, gemini, copyright, regulation]
+
+  mma:
+    section: sports
+    keywords: [mma, fight, octagon]
+  ufc:
+    section: sports
+    keywords: [ufc, fight night, dana white]
+  one_championship:
+    section: sports
+    keywords: [one championship, one fc]
+  brazilian_jiu_jitsu:
+    section: sports
+    keywords: [bjj, jiu-jitsu, adcc, grappling, ibjjf]
+  formula_1:
+    section: sports
+    keywords: [f1, formula 1, grand prix, verstappen, mclaren, ferrari]
+  football:
+    section: sports
+    keywords: [football, soccer, premier league, la liga, champions league, transfer]
+
+# -----------------------------------------------------------------------------
+# Client / competitor watchlist. Brand mentions get a scoring boost and are
+# tagged with the client so the "Client category watch" section can flag
+# "which client this may affect".
+# Edit freely — add real client names.
+# -----------------------------------------------------------------------------
+watchlist:
+  - client: "Automotive client"
+    category: automotive
+    brands: [Proton, Perodua, Toyota, Honda, BYD, Tesla]
+    competitors: [Mazda, Nissan, Chery]
+  - client: "Energy / petrol client"
+    category: petrol_retail
+    brands: [Petronas, Shell, BHPetrol, Caltex]
+    competitors: [Petron]
+  - client: "FMCG client"
+    category: fmcg
+    brands: [Nestle, Unilever, Mondelez]
+    competitors: [Procter & Gamble]
+  - client: "Telco client"
+    category: telecommunications
+    brands: [Maxis, CelcomDigi, U Mobile]
+    competitors: [YES, unifi]
+  - client: "Bank client"
+    category: banking_and_finance
+    brands: [Maybank, CIMB, RHB, Public Bank]
+    competitors: [Hong Leong, AmBank]

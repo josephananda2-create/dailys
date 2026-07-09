@@ -1,0 +1,51 @@
+# =============================================================================
+# scoring.yaml — how items are ranked. Tune the numbers, no code changes needed.
+#
+# Final score = weighted sum of the components below. Higher = more important.
+# Items are ranked within each section; the top items overall feed the
+# "10 things you need to know today" list.
+# =============================================================================
+
+weights:
+  priority: 1.6        # source `priority` (1-10) * this
+  reliability: 0.8     # source `reliability` (1-10) * this
+  freshness: 3.0       # freshness score (0-1, see freshness_half_life_hours) * this
+  category_match: 2.0  # item text matches its category keywords
+  watchlist_match: 4.0 # item mentions a client/competitor brand (big boost)
+  calendar_match: 3.0  # item tags/keywords match today's/tomorrow's meetings
+  gmail_topic_match: 1.5 # item topic also appeared in the inbox scan (corroboration)
+  corroboration: 2.0   # story appears from >1 independent source
+
+# Freshness decays with a half-life. An item this many hours old scores ~0.5.
+freshness_half_life_hours: 24
+# Items older than this (hours) are dropped before scoring.
+max_age_hours: 72
+
+# Low-reliability guardrail: an item whose source reliability is below this
+# threshold is DROPPED unless another source corroborates the same story
+# (same dedupe cluster). Prevents single weak sources from ranking.
+low_reliability_threshold: 6
+
+# De-duplication.
+dedupe:
+  # Two items are "the same story" if normalized-title similarity >= this.
+  title_similarity: 0.72
+  # Don't repeat a story included in the last N days...
+  seen_window_days: 5
+  # ...unless its content changed by at least this much (fuzzy), i.e. a
+  # "meaningful update" — then it may appear again, flagged as an update.
+  meaningful_update_delta: 0.35
+
+# How many items to keep per section after ranking (keeps the brief tight).
+section_caps:
+  advertising: 6
+  strategy: 5
+  world: 6
+  malaysia: 6
+  client_category: 8
+  ai: 5
+  sports: 6
+  day_ahead: 99   # never cap the user's own day
+
+# Size of the top "need to know" list.
+top_n: 10

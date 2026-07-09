@@ -1,0 +1,31 @@
+# Secrets
+.env
+*.env
+!.env.example
+credentials.json
+token.json
+google_token.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+
+# Runtime data (keep folders, ignore contents)
+data/cache/*
+data/logs/*
+data/archive/*
+!data/cache/.gitkeep
+!data/logs/.gitkeep
+!data/archive/.gitkeep
+data/seen_stories.json
+data/state/
+
+# OS
+.DS_Store

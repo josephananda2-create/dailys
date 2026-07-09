@@ -1,0 +1,48 @@
+[project]
+name = "morning-brief"
+version = "0.1.0"
+description = "Automated daily morning briefing system for an advertising strategist."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Joseph Ananda" }]
+
+dependencies = [
+    "PyYAML>=6.0",
+    "feedparser>=6.0.11",
+    "requests>=2.31",
+    "python-dateutil>=2.9",
+    "beautifulsoup4>=4.12",
+]
+
+[project.optional-dependencies]
+# Everything below is optional. The app runs (RSS-only) without any of it.
+llm = ["anthropic>=0.40"]
+notion = ["notion-client>=2.2"]
+google = [
+    "google-api-python-client>=2.130",
+    "google-auth>=2.30",
+    "google-auth-oauthlib>=1.2",
+]
+all = [
+    "anthropic>=0.40",
+    "notion-client>=2.2",
+    "google-api-python-client>=2.130",
+    "google-auth>=2.30",
+    "google-auth-oauthlib>=1.2",
+]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+brief = "morning_brief.main:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

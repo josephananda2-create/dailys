@@ -1,0 +1,70 @@
+name: Daily Morning Brief
+
+# Runs at 23:00 UTC = 07:00 Asia/Kuala_Lumpur (UTC+8), every day.
+# Also runnable on demand from the Actions tab.
+on:
+  schedule:
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+    inputs:
+      email:
+        description: "Also email the brief?"
+        type: boolean
+        default: true
+
+concurrency:
+  group: daily-brief
+  cancel-in-progress: false
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: pip install ".[all]"
+
+      # Restore the seen-story memory + archive between runs so dedup persists.
+      - name: Restore state
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/seen_stories.json
+            data/state
+          key: brief-state-${{ github.run_id }}
+          restore-keys: brief-state-
+
+      - name: Validate sources
+        run: python -m morning_brief.main sources validate
+
+      - name: Generate & deliver brief
+        env:
+          TZ: Asia/Kuala_Lumpur
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIEF_MODEL: ${{ secrets.BRIEF_MODEL }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_PARENT_PAGE_ID: ${{ secrets.NOTION_PARENT_PAGE_ID }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          BRIEF_RECIPIENT: ${{ secrets.BRIEF_RECIPIENT }}
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+        run: python -m morning_brief.main run --email
+
+      - name: Upload brief + logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-brief
+          path: |
+            data/archive/*.md
+            data/logs/*.log
+          if-no-files-found: ignore
+          retention-days: 14

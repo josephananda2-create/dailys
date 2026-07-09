@@ -1,0 +1,357 @@
+# =============================================================================
+# sources.yaml — the ONLY place sources live. Never hardcode sources in code.
+#
+# Edit this file to add / remove / pause / prioritise / categorise sources.
+# Validate any time with:  brief sources validate
+#
+# Fields (per source):
+#   name         : human label (required, unique)
+#   type         : rss | website | newsletter | api | gmail_search | manual |
+#                  youtube | podcast | social            (required)
+#   category     : one of the keys in categories.yaml     (required)
+#   region       : global | asia | malaysia | mixed | us | uk | ...
+#   url          : feed/page URL              (required for rss/website/etc.)
+#   query        : search string              (required for gmail_search/api)
+#   priority     : 1-10  — higher = more weight in scoring
+#   reliability  : 1-10  — low reliability items need a second source to rank
+#   frequency    : daily | hourly | weekly    (hint only; informational)
+#   tags         : list of topic tags (used for calendar/gmail relevance boost)
+#   active       : true | false — false means "skip entirely"
+#   notes        : why this source matters
+#
+# NOTE: URLs left as "ADD_..._HERE" are placeholders. The validator will WARN
+# (not fail) on them and the collector skips them. Fill them in as you go.
+# =============================================================================
+
+sources:
+  # ------------------------------------------------------------------ ADVERTISING
+  - name: Campaign Asia
+    type: rss
+    category: advertising
+    region: asia
+    url: "ADD_RSS_OR_SOURCE_URL_HERE"       # e.g. https://www.campaignasia.com/rss
+    priority: 9
+    reliability: 9
+    frequency: daily
+    active: true
+    tags: [agency news, campaigns, client wins, apac]
+    notes: "Agency moves, campaign launches, and APAC advertising news."
+
+  - name: Adweek
+    type: rss
+    category: advertising
+    region: global
+    url: "https://www.adweek.com/feed/"
+    priority: 8
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [agency news, campaigns, media, brands]
+    notes: "US-centric but strong on brand and media moves."
+
+  - name: The Drum
+    type: rss
+    category: advertising
+    region: global
+    url: "https://www.thedrum.com/rss.xml"
+    priority: 8
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [agency news, campaigns, creativity, awards]
+    notes: "Broad global adland coverage; good for creative work worth studying."
+
+  - name: Marketing-Interactive (SEA)
+    type: rss
+    category: advertising
+    region: asia
+    url: "https://www.marketing-interactive.com/feed"
+    priority: 9
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [sea, malaysia, agency news, client wins]
+    notes: "Best single source for Malaysia/SEA agency and marketing news."
+
+  # ------------------------------------------------------------------ STRATEGY
+  - name: WARC
+    type: website
+    category: strategy
+    region: global
+    url: "ADD_SOURCE_URL_HERE"              # e.g. https://www.warc.com/newsandopinion
+    priority: 10
+    reliability: 10
+    frequency: daily
+    active: true
+    tags: [effectiveness, strategy, research, decks]
+    notes: "Strategic planning, effectiveness, and client decks. Mostly paywalled — use for headlines/angles."
+
+  - name: System1 (Uncensored CMO / blog)
+    type: website
+    category: strategy
+    region: global
+    url: "ADD_SOURCE_URL_HERE"              # e.g. https://system1group.com/blog
+    priority: 9
+    reliability: 9
+    frequency: weekly
+    active: true
+    tags: [effectiveness, brand building, creative testing, emotion]
+    notes: "Emotional advertising and creative effectiveness."
+
+  - name: Contagious
+    type: rss
+    category: strategy
+    region: global
+    url: "ADD_SOURCE_URL_HERE"
+    priority: 8
+    reliability: 9
+    frequency: weekly
+    active: true
+    tags: [campaigns, creativity, trends]
+    notes: "Best-in-class campaign breakdowns worth studying."
+
+  - name: IPA
+    type: website
+    category: strategy
+    region: uk
+    url: "ADD_SOURCE_URL_HERE"
+    priority: 8
+    reliability: 10
+    frequency: weekly
+    active: true
+    tags: [effectiveness, research, awards]
+    notes: "Effectiveness gold standard (Binet & Field lineage)."
+
+  - name: Mark Pollard
+    type: website
+    category: strategy
+    region: global
+    url: "ADD_SOURCE_URL_HERE"
+    priority: 7
+    reliability: 7
+    frequency: weekly
+    active: true
+    tags: [strategy craft, briefs, planning]
+    notes: "Practical strategy craft — briefs and planning."
+
+  - name: Julian Cole (Planning Dirty)
+    type: newsletter
+    category: strategy
+    region: global
+    url: "ADD_SOURCE_URL_HERE"
+    priority: 7
+    reliability: 7
+    frequency: weekly
+    active: true
+    tags: [strategy craft, frameworks, planning]
+    notes: "Strategy frameworks and career craft."
+
+  - name: Think with Google
+    type: rss
+    category: strategy
+    region: global
+    url: "ADD_SOURCE_URL_HERE"
+    priority: 7
+    reliability: 8
+    frequency: weekly
+    active: true
+    tags: [consumer insight, data, platforms]
+    notes: "Consumer insight and platform data."
+
+  # ------------------------------------------------------------------ WORLD / BUSINESS
+  - name: Reuters World
+    type: rss
+    category: global_economy
+    region: global
+    url: "https://feeds.reuters.com/reuters/worldNews"
+    priority: 8
+    reliability: 10
+    frequency: hourly
+    active: true
+    tags: [economics, politics, geopolitics, markets]
+    notes: "Wire-service reliability for world business & politics."
+
+  - name: BBC Business
+    type: rss
+    category: global_markets
+    region: global
+    url: "https://feeds.bbci.co.uk/news/business/rss.xml"
+    priority: 7
+    reliability: 9
+    frequency: hourly
+    active: true
+    tags: [markets, economy, business]
+    notes: "Accessible global business news."
+
+  - name: Al Jazeera
+    type: rss
+    category: global_politics
+    region: global
+    url: "https://www.aljazeera.com/xml/rss/all.xml"
+    priority: 6
+    reliability: 8
+    frequency: hourly
+    active: true
+    tags: [geopolitics, politics, global south]
+    notes: "Non-Western vantage point on geopolitics."
+
+  # ------------------------------------------------------------------ MALAYSIA
+  - name: The Edge Malaysia
+    type: rss
+    category: malaysia_economy
+    region: malaysia
+    url: "https://theedgemalaysia.com/rss"
+    priority: 9
+    reliability: 9
+    frequency: daily
+    active: true
+    tags: [malaysia, economy, business, markets]
+    notes: "Primary source for Malaysian business & markets."
+
+  - name: Malaysiakini
+    type: rss
+    category: malaysia_politics
+    region: malaysia
+    url: "ADD_SOURCE_URL_HERE"
+    priority: 8
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [malaysia, politics, policy]
+    notes: "Malaysian politics and policy."
+
+  - name: The Star (Malaysia)
+    type: rss
+    category: malaysia_consumer_sentiment
+    region: malaysia
+    url: "https://www.thestar.com.my/rss/News/Nation"
+    priority: 7
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [malaysia, consumer, culture, cost of living]
+    notes: "Mainstream Malaysian consumer & culture pulse."
+
+  # ------------------------------------------------------------------ CLIENT CATEGORIES
+  - name: Paul Tan (automotive MY)
+    type: rss
+    category: automotive
+    region: malaysia
+    url: "https://paultan.org/feed/"
+    priority: 8
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [automotive, ev, phev, malaysia]
+    notes: "Malaysia's dominant automotive/EV outlet — great for auto & EV clients."
+
+  - name: Electrek
+    type: rss
+    category: evs
+    region: global
+    url: "https://electrek.co/feed/"
+    priority: 7
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [ev, energy, tech]
+    notes: "Global EV and clean-energy trends."
+
+  # ------------------------------------------------------------------ AI
+  - name: Ars Technica AI
+    type: rss
+    category: ai
+    region: global
+    url: "https://arstechnica.com/ai/feed/"
+    priority: 8
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [ai models, tools, policy]
+    notes: "Solid AI reporting — model releases, policy, analysis."
+
+  - name: MIT Technology Review AI
+    type: rss
+    category: ai
+    region: global
+    url: "https://www.technologyreview.com/topic/artificial-intelligence/feed"
+    priority: 8
+    reliability: 9
+    frequency: daily
+    active: true
+    tags: [ai models, regulation, research]
+    notes: "Deeper AI analysis and regulation."
+
+  # ------------------------------------------------------------------ SPORTS
+  - name: MMA Junkie
+    type: rss
+    category: mma
+    region: global
+    url: "https://mmajunkie.usatoday.com/feed"
+    priority: 6
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [ufc, mma, results, fights]
+    notes: "UFC/MMA results and storylines."
+
+  - name: BBC Sport Football
+    type: rss
+    category: football
+    region: global
+    url: "https://feeds.bbci.co.uk/sport/football/rss.xml"
+    priority: 5
+    reliability: 9
+    frequency: hourly
+    active: true
+    tags: [football, results, transfers]
+    notes: "Football results, storylines, transfers."
+
+  - name: Formula 1 (official)
+    type: rss
+    category: formula_1
+    region: global
+    url: "https://www.formula1.com/content/fom-website/en/latest/all.xml"
+    priority: 5
+    reliability: 9
+    frequency: daily
+    active: true
+    tags: [f1, races, results]
+    notes: "Official F1 news and race calendar."
+
+  # ------------------------------------------------------------------ GMAIL (inbox scan)
+  - name: Gmail advertising newsletters
+    type: gmail_search
+    category: advertising
+    region: mixed
+    query: "(advertising OR marketing OR strategy OR campaign OR agency OR WARC OR Effie OR Cannes OR Contagious) newer_than:2d"
+    priority: 8
+    reliability: 7
+    frequency: daily
+    active: true
+    tags: [newsletters, inbox, industry updates]
+    notes: "Pulls relevant industry emails from Gmail."
+
+  - name: Gmail AI newsletters
+    type: gmail_search
+    category: ai
+    region: mixed
+    query: "(AI OR \"artificial intelligence\" OR LLM OR OpenAI OR Anthropic OR Gemini) newer_than:2d"
+    priority: 7
+    reliability: 6
+    frequency: daily
+    active: true
+    tags: [ai, newsletters, inbox]
+    notes: "AI newsletters and product announcements in the inbox."
+
+  - name: Gmail client & category alerts
+    type: gmail_search
+    category: automotive
+    region: mixed
+    query: "(newsletter OR alert OR update) (automotive OR EV OR FMCG OR bank OR telco OR energy OR petrol) newer_than:3d"
+    priority: 7
+    reliability: 6
+    frequency: daily
+    active: true
+    tags: [clients, categories, alerts, inbox]
+    notes: "Category/client alerts and Google-Alert-style emails."
