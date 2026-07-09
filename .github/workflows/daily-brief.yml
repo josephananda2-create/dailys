@@ -38,8 +38,8 @@ jobs:
           path: |
             data/seen_stories.json
             data/state
-          key: brief-state-${{ github.run_id }}
-          restore-keys: brief-state-
+          key: brief-state-v2-${{ github.run_id }}
+          restore-keys: brief-state-v2-
 
       - name: Validate sources
         run: python -m morning_brief.main sources validate

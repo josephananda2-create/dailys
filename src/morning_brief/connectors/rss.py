@@ -17,7 +17,10 @@ from ..utils.text import strip_html, truncate
 
 log = get_logger()
 
-_UA = "MorningBrief/0.1 (+https://github.com/) feed reader"
+# Use a real browser UA — many outlets (The Drum, The Star, The Edge, etc.)
+# serve a block page to non-browser agents.
+_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+       "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 
 try:
     import feedparser  # type: ignore
@@ -34,7 +37,16 @@ def fetch(source: Source, cfg: Config, limit: int = 25) -> list[Item]:
         return []
 
     section = cfg.section_for(source.category)
-    raw_entries = _fetch_feedparser(url, limit) if _HAVE_FEEDPARSER else _fetch_stdlib(url, limit)
+    # Try feedparser first; if it yields nothing, fall back to the stdlib parser
+    # (handles feeds feedparser rejects as "bozo" but that are still readable).
+    raw_entries: list[dict] = []
+    if _HAVE_FEEDPARSER:
+        try:
+            raw_entries = _fetch_feedparser(url, limit)
+        except Exception as exc:  # noqa: BLE001
+            log.debug("feedparser failed for '%s' (%s); trying stdlib.", source.name, exc)
+    if not raw_entries:
+        raw_entries = _fetch_stdlib(url, limit)
 
     items: list[Item] = []
     for e in raw_entries:

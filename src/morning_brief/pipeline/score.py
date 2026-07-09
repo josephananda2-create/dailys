@@ -104,6 +104,34 @@ def score_items(
     return survivors
 
 
+def reclassify_sections(items: list[Item], cfg: Config) -> list[Item]:
+    """Route each item to a section by its CONTENT (keyword match), not just its
+    source. Fixes broad outlets (BBC/Guardian) dumping everything into 'world'
+    while AI/sports/client-category sections starve. Calendar events are left
+    untouched. The source's own section is the fallback when nothing matches.
+    """
+    # Precompute keyword -> (section, weight) once.
+    cat_keywords: list[tuple[str, list[str]]] = []
+    for cat, meta in cfg.categories.items():
+        if isinstance(meta, dict):
+            cat_keywords.append((meta.get("section", "world"), meta.get("keywords", []) or []))
+
+    for it in items:
+        if it.kind == "event" or it.section == "day_ahead":
+            continue
+        text = f"{it.title} {it.summary}".lower()
+        tally: dict[str, int] = {}
+        for section, kws in cat_keywords:
+            hits = sum(1 for k in kws if str(k).lower() in text)
+            if hits:
+                tally[section] = tally.get(section, 0) + hits
+        if tally:
+            # Give the source's original section a small tie-break advantage.
+            tally[it.section] = tally.get(it.section, 0) + 1
+            it.section = max(tally, key=tally.get)
+    return items
+
+
 def group_by_section(items: list[Item], cfg: Config) -> dict[str, list[Item]]:
     caps = cfg.scoring.get("section_caps", {})
     sections: dict[str, list[Item]] = {}

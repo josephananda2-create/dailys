@@ -87,6 +87,20 @@ def test_watchlist_with_yaml_boolean_brand_does_not_crash():
     _item_line(ranked[0]) if ranked else None  # must not raise
 
 
+def test_reclassify_routes_by_content_not_source():
+    cfg = make_cfg()
+    cfg.categories["ai"] = {"section": "ai", "keywords": ["ai", "model", "openai"]}
+    cfg.categories["football"] = {"section": "sports", "keywords": ["football", "world cup"]}
+    from morning_brief.pipeline.score import reclassify_sections
+    # An AI story arriving from a 'world'-section source should move to 'ai'.
+    ai_item = _item("OpenAI releases a new model", section="world", category="global_politics")
+    ai_item.summary = "a new ai model from openai"
+    sport = _item("World Cup final thriller", section="world", category="global_politics")
+    reclassify_sections([ai_item, sport], cfg)
+    assert ai_item.section == "ai"
+    assert sport.section == "sports"
+
+
 def test_old_items_filtered_by_max_age():
     cfg = make_cfg()
     old = _item("Ancient news", reliability=9, published=datetime.now(timezone.utc) - timedelta(hours=200))

@@ -21,10 +21,10 @@ categories:
     keywords: [economy, gdp, inflation, recession, trade, imf, world bank]
   global_politics:
     section: world
-    keywords: [election, government, geopolitics, sanctions, diplomacy, conflict]
+    keywords: [election, government, geopolitics, sanctions, diplomacy, conflict, war, iran, ukraine, gaza, immigration, migration, europe, prime minister, protest]
   global_markets:
     section: world
-    keywords: [markets, stocks, bonds, currency, fed, rates, commodities, oil price]
+    keywords: [markets, stocks, bonds, currency, fed, rates, commodities, oil price, crypto, bitcoin, ethereum, gold]
 
   malaysia_economy:
     section: malaysia
@@ -103,7 +103,7 @@ categories:
     keywords: [f1, formula 1, grand prix, verstappen, mclaren, ferrari]
   football:
     section: sports
-    keywords: [football, soccer, premier league, la liga, champions league, transfer]
+    keywords: [football, soccer, premier league, la liga, champions league, transfer, world cup, fifa, goal, striker]
 
 # -----------------------------------------------------------------------------
 # Client / competitor watchlist. Brand mentions get a scoring boost and are

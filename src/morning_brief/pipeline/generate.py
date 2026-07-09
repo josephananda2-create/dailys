@@ -8,7 +8,7 @@ from ..models import Item
 from ..utils.dates import today_str
 from ..utils.logging import get_logger
 from . import summarize
-from .score import group_by_section, top_n
+from .score import group_by_section, reclassify_sections, top_n
 
 log = get_logger()
 
@@ -25,18 +25,17 @@ SECTION_TITLES = {
 
 
 def build_context(scored: list[Item], events: list[Item], cfg: Config, report: dict) -> dict:
+    reclassify_sections(scored, cfg)  # route by content before grouping
     sections = group_by_section(scored, cfg)
     picks = top_n(scored, cfg)
+    # NOTE: we deliberately do NOT pass fetch/feed failures to the LLM — that is
+    # internal plumbing and must never leak into the reader-facing brief.
     return {
         "date": today_str(),
         "top_picks": [p.id for p in picks],
         "sections": {sec: [i.to_context() for i in items] for sec, items in sections.items()},
         "calendar": [e.to_context() for e in events],
-        "run_report": {
-            "sources_ok": report.get("ok", []),
-            "sources_failed": [f["name"] for f in report.get("failed", [])],
-            "sources_paused": report.get("skipped", []),
-        },
+        "has_calendar": bool(events),
     }
 
 
@@ -63,6 +62,7 @@ def _item_line(item: Item) -> str:
 
 def _render_fallback(scored: list[Item], events: list[Item], cfg: Config, report: dict) -> str:
     date = today_str()
+    reclassify_sections(scored, cfg)
     sections = group_by_section(scored, cfg)
     picks = top_n(scored, cfg)
     out: list[str] = [f"# Morning Brief: {date}", ""]
