@@ -33,18 +33,18 @@ Do the parts in order. You can stop after any part — each one works on its own
 
 ## PART A — Get it running (30 min)
 
-### A1. Make the code "live" (merge it into main)
+### A1. Confirm the code is live (nothing to do — already done ✓)
 
-The robot only runs code on the **main** branch, so we copy the work over.
+Good news: the code is already on your repository's **default (live) branch**,
+which is the branch the 7 AM robot runs from. So there is **no merge and no pull
+request to do**. Skip straight to A2.
 
-1. Go to your repository on GitHub (`josephananda2-create/dailys`).
-2. You'll likely see a yellow banner: **"claude/morning-briefing-system-pqlm2u
-   had recent pushes — Compare & pull request."** Click that green button.
-   - *(No banner? Click the **Pull requests** tab → **New pull request** → set
-     "base: main" and "compare: claude/morning-briefing-system-pqlm2u".)*
-3. Click **Create pull request**.
-4. On the next screen, click **Merge pull request**, then **Confirm merge**.
-5. Done — the code is now on **main**. (You can ignore/delete the side branch.)
+*(For the curious: your default branch is currently named
+`claude/morning-briefing-system-pqlm2u` rather than `main`. That's unusual but
+works perfectly — scheduled runs use whatever the default branch is. If you'd
+ever like it renamed to `main` for tidiness, that's a one-click job in
+**Settings → Branches**, but it's optional and changes nothing about how this
+works.)*
 
 ### A2. Get your Anthropic key (this is the AI that writes the brief)
 
