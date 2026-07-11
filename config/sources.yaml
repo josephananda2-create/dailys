@@ -42,7 +42,8 @@ sources:
     type: rss
     category: advertising
     region: global
-    url: "https://www.thedrum.com/rss.xml"
+    # Direct feed 403s from cloud IPs — pull via Google News instead (links go to the original articles).
+    url: "https://news.google.com/rss/search?q=site:thedrum.com&hl=en-US&gl=US&ceid=US:en"
     priority: 8
     reliability: 8
     frequency: daily
@@ -66,7 +67,8 @@ sources:
     type: rss
     category: advertising
     region: asia
-    url: "https://www.marketing-interactive.com/rss"
+    # No public direct feed — pull via Google News.
+    url: "https://news.google.com/rss/search?q=site:marketing-interactive.com&hl=en-MY&gl=MY&ceid=MY:en"
     priority: 9
     reliability: 7
     frequency: daily
@@ -74,12 +76,25 @@ sources:
     tags: [sea, malaysia, agency news, client wins]
     notes: "Malaysia/SEA agency & marketing news."
 
+  - name: Campaign Asia
+    type: rss
+    category: advertising
+    region: asia
+    url: "https://news.google.com/rss/search?q=site:campaignasia.com&hl=en-MY&gl=MY&ceid=MY:en"
+    priority: 9
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [apac, agency news, campaigns, client wins]
+    notes: "APAC agency moves & campaigns, via Google News."
+
   # ------------------------------------------------------------- STRATEGY
   - name: Sweathead (Mark Pollard)
     type: rss
     category: strategy
     region: global
-    url: "https://sweathead.substack.com/feed"
+    # Substack 403s cloud IPs — pull via Google News.
+    url: "https://news.google.com/rss/search?q=site:sweathead.substack.com&hl=en-US&gl=US&ceid=US:en"
     priority: 9
     reliability: 8
     frequency: weekly
@@ -91,7 +106,8 @@ sources:
     type: rss
     category: strategy
     region: uk
-    url: "https://www.marketingweek.com/feed/"
+    # Direct feed 403s from cloud IPs — pull via Google News.
+    url: "https://news.google.com/rss/search?q=site:marketingweek.com&hl=en-GB&gl=GB&ceid=GB:en"
     priority: 8
     reliability: 8
     frequency: daily
@@ -99,17 +115,17 @@ sources:
     tags: [brand building, effectiveness, strategy, research]
     notes: "Brand strategy, effectiveness, and marketing leadership."
 
-  - name: Think with Google
+  - name: WARC (headlines via Google News)
     type: rss
     category: strategy
     region: global
-    url: "https://www.thinkwithgoogle.com/feeds/rss.xml"
-    priority: 7
-    reliability: 8
+    url: "https://news.google.com/rss/search?q=site:warc.com&hl=en-US&gl=US&ceid=US:en"
+    priority: 8
+    reliability: 9
     frequency: weekly
     active: true
-    tags: [consumer insight, data, platforms]
-    notes: "Consumer insight and platform data."
+    tags: [effectiveness, strategy, research]
+    notes: "WARC headlines (body is paywalled, but the angle is still useful)."
 
   - name: WARC
     type: website
@@ -251,7 +267,8 @@ sources:
     type: rss
     category: malaysia_economy
     region: malaysia
-    url: "https://theedgemalaysia.com/rss"
+    # Direct feed 404s — pull via Google News.
+    url: "https://news.google.com/rss/search?q=site:theedgemalaysia.com&hl=en-MY&gl=MY&ceid=MY:en"
     priority: 9
     reliability: 9
     frequency: daily
@@ -263,7 +280,8 @@ sources:
     type: rss
     category: malaysia_consumer_sentiment
     region: malaysia
-    url: "https://www.thestar.com.my/rss/News/Nation"
+    # Direct feed 404s — pull via Google News.
+    url: "https://news.google.com/rss/search?q=site:thestar.com.my&hl=en-MY&gl=MY&ceid=MY:en"
     priority: 7
     reliability: 8
     frequency: daily
@@ -366,7 +384,7 @@ sources:
     priority: 5
     reliability: 8
     frequency: daily
-    active: true
+    active: false   # Returns an empty response to automated fetches; BBC covers football.
     tags: [football, soccer, world cup]
     notes: "Global soccer coverage."
 
@@ -404,7 +422,7 @@ sources:
     priority: 8
     reliability: 7
     frequency: daily
-    active: true
+    active: false   # Needs Gmail OAuth (token expired). Email delivery uses the App Password instead.
     tags: [newsletters, inbox, industry updates]
     notes: "Relevant industry emails (requires Gmail OAuth)."
 
@@ -416,6 +434,6 @@ sources:
     priority: 7
     reliability: 6
     frequency: daily
-    active: true
+    active: false   # Needs Gmail OAuth (token expired). Email delivery uses the App Password instead.
     tags: [ai, newsletters, inbox]
     notes: "AI newsletters in the inbox (requires Gmail OAuth)."
