@@ -119,16 +119,23 @@ def render_with_llm(context: dict) -> str | None:
 
     try:
         client = anthropic.Anthropic(api_key=api_key)
-        msg = client.messages.create(
+        # Sonnet 5 runs adaptive thinking by default, and max_tokens caps
+        # thinking + text combined — so give generous headroom and stream
+        # (the SDK requires streaming for large max_tokens to avoid timeouts).
+        with client.messages.stream(
             model=model,
-            max_tokens=8000,
+            max_tokens=64000,
             system=SYSTEM_PROMPT,
             messages=[{
                 "role": "user",
                 "content": USER_TEMPLATE.format(date=context["date"], payload=payload),
             }],
-        )
+        ) as stream:
+            msg = stream.get_final_message()
         text = "".join(block.text for block in msg.content if block.type == "text")
+        if not text.strip():
+            log.error("LLM returned empty text (stop_reason=%s); falling back.", msg.stop_reason)
+            return None
         log.info("LLM brief generated with %s (%d chars).", model, len(text))
         return text.strip()
     except Exception as exc:  # noqa: BLE001
