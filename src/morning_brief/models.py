@@ -72,7 +72,7 @@ class Item:
             "category": self.category,
             "section": self.section,
             "region": self.region,
-            "snippet": self.summary[:600],
+            "snippet": self.summary[:900],
             "kind": self.kind,
             "watchlist": self.watchlist_hits,
             "corroborated_by": self.corroborated_by,

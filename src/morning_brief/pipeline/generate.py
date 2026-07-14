@@ -91,7 +91,19 @@ def _render_fallback(scored: list[Item], events: list[Item], cfg: Config, report
             out.append(header)
         items = sections.get(sec, [])
         if sec == "strategy":
+            newsletters = [i for i in items if i.category == "newsletters"]
+            items = [i for i in items if i.category != "newsletters"]
             out.append("**Strategy thinking**")
+            if items:
+                out += [_item_line(i) for i in items]
+            else:
+                out.append("- Nothing that clears the bar today.")
+            if newsletters:
+                out.append("")
+                out.append("**From your newsletters**")
+                out += [_item_line(i) for i in newsletters]
+            out.append("")
+            continue
         if items:
             out += [_item_line(i) for i in items]
         else:

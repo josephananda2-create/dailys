@@ -39,7 +39,7 @@ dedupe:
 # How many items to keep per section after ranking (keeps the brief tight).
 section_caps:
   advertising: 6
-  strategy: 5
+  strategy: 10   # feeds both "Strategy thinking" and "From your newsletters"
   world: 6
   malaysia: 6
   client_category: 8

@@ -112,12 +112,15 @@ def reclassify_sections(items: list[Item], cfg: Config) -> list[Item]:
     """
     # Precompute keyword -> (section, weight) once.
     cat_keywords: list[tuple[str, list[str]]] = []
+    pinned_cats: set[str] = set()
     for cat, meta in cfg.categories.items():
         if isinstance(meta, dict):
             cat_keywords.append((meta.get("section", "world"), meta.get("keywords", []) or []))
+            if meta.get("pin_section"):
+                pinned_cats.add(cat)
 
     for it in items:
-        if it.kind == "event" or it.section == "day_ahead":
+        if it.kind == "event" or it.section == "day_ahead" or it.category in pinned_cats:
             continue
         text = f"{it.title} {it.summary}".lower()
         tally: dict[str, int] = {}

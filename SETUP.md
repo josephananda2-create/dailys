@@ -146,6 +146,13 @@ without it.
    Continue** through the steps.
 4. On **Test users**, click **Add users** and add your own Gmail address
    (`josephananda2@gmail.com`). Save.
+5. **Important — publish the app.** Back on the OAuth consent screen page,
+   click **Publish app** (status changes from "Testing" to "In production").
+   While the app stays in Testing mode, every refresh token **expires after
+   7 days** and the Gmail/Calendar connection silently dies — this is the
+   usual reason "Google stopped working". You don't need Google's
+   verification review for personal use; the unverified-app warning during
+   sign-in is fine to click through.
 
 ### C3. Create the login credentials
 
@@ -169,6 +176,14 @@ without it.
    *(If it warns the app is unverified, click Advanced → "Go to Morning Brief".)*
 5. Back on the playground, click **Exchange authorization code for tokens**.
 6. Copy the **Refresh token** value (a long string starting `1//...`).
+
+> ⚠️ Playground tokens can also expire on their own. The most durable route is
+> minting the token with the repo's own script instead:
+> `GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=... python scripts/google_auth.py`
+> (needs a **Desktop app** OAuth client rather than Web). Either way, the app
+> must be **published to production** (step C2.5) or the token dies in 7 days.
+> If Gmail/Calendar stop working later, re-mint the token and update the
+> `GOOGLE_REFRESH_TOKEN` secret — everything else stays as-is.
 
 ### C5. Add the Google secrets in GitHub
 

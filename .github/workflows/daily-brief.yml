@@ -31,13 +31,15 @@ jobs:
       - name: Install
         run: pip install ".[all]"
 
-      # Restore the seen-story memory + archive between runs so dedup persists.
+      # Restore the seen-story memory + archive between runs so dedup persists
+      # and the weekly brief can read the week's daily archives.
       - name: Restore state
         uses: actions/cache@v4
         with:
           path: |
             data/seen_stories.json
             data/state
+            data/archive
           key: brief-state-v2-${{ github.run_id }}
           restore-keys: brief-state-v2-
 
