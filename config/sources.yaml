@@ -474,7 +474,7 @@ sources:
     priority: 8
     reliability: 7
     frequency: daily
-    active: false   # Needs Gmail OAuth (token expired). Email delivery uses the App Password instead.
+    active: true
     tags: [newsletters, inbox, industry updates]
     notes: "Relevant industry emails (requires Gmail OAuth)."
 
@@ -486,6 +486,6 @@ sources:
     priority: 7
     reliability: 6
     frequency: daily
-    active: false   # Needs Gmail OAuth (token expired). Email delivery uses the App Password instead.
+    active: true
     tags: [ai, newsletters, inbox]
     notes: "AI newsletters in the inbox (requires Gmail OAuth)."
