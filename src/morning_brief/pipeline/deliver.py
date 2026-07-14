@@ -13,10 +13,11 @@ from ..utils.logging import get_logger
 log = get_logger()
 
 
-def save_local(markdown: str, archive_dir: str | Path = "data/archive") -> Path:
+def save_local(markdown: str, archive_dir: str | Path = "data/archive",
+               filename: str | None = None) -> Path:
     d = Path(archive_dir)
     d.mkdir(parents=True, exist_ok=True)
-    path = d / f"brief-{today_iso()}.md"
+    path = d / (filename or f"brief-{today_iso()}.md")
     path.write_text(markdown, encoding="utf-8")
     log.info("Brief written to %s", path)
     return path
@@ -32,14 +33,17 @@ def save_to_notion(markdown: str, n_sections: int, n_items: int) -> str | None:
     )
 
 
-def email_brief(markdown: str, cfg: Config) -> bool:
+def email_markdown(markdown: str, subject: str) -> bool:
     html = _markdown_to_html(markdown)
-    subject = f"☀️ Morning Brief — {today_str()}"
     # Prefer the simple SMTP App Password path; fall back to the Gmail API.
     from ..connectors import smtp_mail
     if smtp_mail.configured():
         return smtp_mail.send_email(subject, html)
     return gmail.send_email(subject, html)
+
+
+def email_brief(markdown: str, cfg: Config) -> bool:
+    return email_markdown(markdown, f"☀️ Morning Brief — {today_str()}")
 
 
 def _markdown_to_html(md: str) -> str:

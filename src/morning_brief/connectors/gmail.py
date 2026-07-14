@@ -58,7 +58,7 @@ def fetch(source: Source, cfg: Config, limit: int = 15) -> list[Item]:
                     source_name=f"{source.name} ({_sender_name(sender)})",
                     category=source.category,
                     published=published,
-                    summary=truncate(snippet, 500),
+                    summary=truncate(snippet, 750),
                     section=section,
                     region=source.region,
                     tags=source.tags,
@@ -104,17 +104,18 @@ def send_email(subject: str, html_body: str, to: str | None = None) -> bool:
     if service is None:
         log.error("Cannot send email: Gmail not configured.")
         return False
-    to = to or env("BRIEF_RECIPIENT")
-    if not to:
+    from .smtp_mail import recipients
+    tos = recipients(to)
+    if not tos:
         log.error("Cannot send email: no recipient (set BRIEF_RECIPIENT).")
         return False
     try:
         message = MIMEText(html_body, "html", "utf-8")
-        message["to"] = to
+        message["to"] = ", ".join(tos)
         message["subject"] = subject
         raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
         service.users().messages().send(userId="me", body={"raw": raw}).execute()
-        log.info("Brief emailed to %s", to)
+        log.info("Brief emailed to %s", ", ".join(tos))
         return True
     except Exception as exc:  # noqa: BLE001
         log.error("Email send failed: %s", exc)

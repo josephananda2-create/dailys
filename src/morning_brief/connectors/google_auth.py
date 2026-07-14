@@ -46,7 +46,13 @@ def get_credentials():
 
         creds.refresh(Request())
     except Exception as exc:  # noqa: BLE001
-        log.error("Google token refresh failed: %s", exc)
+        hint = ""
+        if "invalid_grant" in str(exc):
+            hint = (" — the refresh token has expired or been revoked. Tokens minted "
+                    "while the OAuth app is in 'Testing' mode last only 7 days: publish "
+                    "the app to Production and re-run scripts/google_auth.py "
+                    "(see README, 'Google setup').")
+        log.error("Google token refresh failed: %s%s", exc, hint)
         return None
     return creds
 

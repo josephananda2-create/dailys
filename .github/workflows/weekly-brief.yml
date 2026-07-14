@@ -1,0 +1,66 @@
+name: Weekly Brief
+
+# Runs at 08:00 UTC = 16:00 Asia/Kuala_Lumpur (UTC+8), every Friday.
+# Synthesises the week's daily briefs (restored from the shared state cache)
+# into one wrap-up email. Also runnable on demand from the Actions tab.
+on:
+  schedule:
+    - cron: "0 8 * * 5"
+  workflow_dispatch:
+    inputs:
+      email:
+        description: "Also email the weekly brief?"
+        type: boolean
+        default: true
+
+# Share the daily workflow's concurrency group so the two never race on the cache.
+concurrency:
+  group: daily-brief
+  cancel-in-progress: false
+
+jobs:
+  weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: pip install ".[all]"
+
+      # Same cache as the daily workflow — this is where the week's archives live.
+      - name: Restore state
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/seen_stories.json
+            data/state
+            data/archive
+          key: brief-state-v2-${{ github.run_id }}
+          restore-keys: brief-state-v2-
+
+      - name: Generate & deliver weekly brief
+        env:
+          TZ: Asia/Kuala_Lumpur
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIEF_MODEL: ${{ secrets.BRIEF_MODEL }}
+          BRIEF_RECIPIENT: ${{ secrets.BRIEF_RECIPIENT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
+        run: python -m morning_brief.main weekly ${{ (github.event_name == 'schedule' || inputs.email) && '--email' || '' }}
+
+      - name: Upload weekly brief + logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-brief
+          path: |
+            data/archive/weekly-*.md
+            data/logs/*.log
+          if-no-files-found: ignore
+          retention-days: 30

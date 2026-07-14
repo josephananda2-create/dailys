@@ -5,6 +5,7 @@ Commands:
   brief preview         Generate and print/write to disk. No Notion, no email.
   brief send            Generate and email the brief.
   brief save            Generate and save to Notion.
+  brief weekly          Synthesise the past week's daily briefs (+ email if --email).
   brief sources validate   Validate config/sources.yaml.
   brief sources list       List configured sources and their status.
   brief logs               Show today's log file.
@@ -149,6 +150,26 @@ def cmd_save(args):
     return _run_pipeline(args.root, save_notion=True, do_email=False, write_local=True)
 
 
+def cmd_weekly(args):
+    from .pipeline import weekly
+    from .pipeline.deliver import email_markdown, save_local
+
+    markdown, n_days = weekly.generate_weekly(days=args.days)
+    if not markdown:
+        log.error("No daily briefs found in data/archive for the last %d days — "
+                  "nothing to summarise.", args.days)
+        return 1
+    log.info("Weekly brief built from %d daily brief(s).", n_days)
+    save_local(markdown, filename=f"weekly-{today_iso()}.md")
+    if args.email:
+        from .utils.dates import now_local
+        subject = f"📅 Weekly Brief — week ending {now_local().strftime('%-d %B %Y')}"
+        email_markdown(markdown, subject)
+    else:
+        print("\n" + markdown)
+    return 0
+
+
 def cmd_sources(args):
     if args.action == "validate":
         vr = validate_sources(args.root)
@@ -219,16 +240,21 @@ def cmd_test(args):
         results.append(ConnectorStatus("Email", False, str(exc)))
 
     # Gmail inbox scan (OAuth only)
+    google_hint = ("token set but refresh failed — likely expired (Testing-mode "
+                   "tokens last 7 days); see README 'Google setup'"
+                   if env("GOOGLE_REFRESH_TOKEN") else None)
     try:
         ok = gmail_conn.available()
-        results.append(ConnectorStatus("Gmail inbox scan", ok, "authenticated" if ok else "not configured (optional, OAuth)"))
+        results.append(ConnectorStatus("Gmail inbox scan", ok,
+                                       "authenticated" if ok else (google_hint or "not configured (optional, OAuth)")))
     except Exception as exc:  # noqa: BLE001
         results.append(ConnectorStatus("Gmail inbox scan", False, str(exc)))
 
     # Calendar
     try:
         ok = cal_conn.available()
-        results.append(ConnectorStatus("Google Calendar", ok, "authenticated" if ok else "not configured"))
+        results.append(ConnectorStatus("Google Calendar", ok,
+                                       "authenticated" if ok else (google_hint or "not configured")))
     except Exception as exc:  # noqa: BLE001
         results.append(ConnectorStatus("Google Calendar", False, str(exc)))
 
@@ -274,6 +300,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     sv = sub.add_parser("save", help="Generate and save to Notion.")
     sv.set_defaults(func=cmd_save)
+
+    wk = sub.add_parser("weekly", help="Synthesise the past week's daily briefs.")
+    wk.add_argument("--email", action="store_true", help="Email the weekly brief.")
+    wk.add_argument("--days", type=int, default=7, help="How many days back to include (default 7).")
+    wk.set_defaults(func=cmd_weekly)
 
     src = sub.add_parser("sources", help="Work with sources.yaml.")
     src.add_argument("action", choices=["validate", "list"])

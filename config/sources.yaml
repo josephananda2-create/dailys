@@ -88,19 +88,71 @@ sources:
     tags: [apac, agency news, campaigns, client wins]
     notes: "APAC agency moves & campaigns, via Google News."
 
-  # ------------------------------------------------------------- STRATEGY
+  # ------------------------------------------------------------- NEWSLETTERS
+  # Substack subscriptions, surfaced in the strategy radar under "From your
+  # newsletters". Substack 403s cloud IPs, so feeds are pulled via Google News;
+  # running locally you can swap url to the direct feed: https://<name>.substack.com/feed
   - name: Sweathead (Mark Pollard)
     type: rss
-    category: strategy
+    category: newsletters
     region: global
-    # Substack 403s cloud IPs — pull via Google News.
     url: "https://news.google.com/rss/search?q=site:sweathead.substack.com&hl=en-US&gl=US&ceid=US:en"
     priority: 9
     reliability: 8
     frequency: weekly
     active: true
-    tags: [strategy craft, briefs, planning, hot takes]
+    tags: [newsletter, strategy craft, briefs, planning, hot takes]
     notes: "Mark Pollard's strategy newsletter — POVs to apply to briefs & decks."
+
+  - name: Post Culture
+    type: rss
+    category: newsletters
+    region: global
+    url: "https://news.google.com/rss/search?q=site:postculture.substack.com&hl=en-US&gl=US&ceid=US:en"
+    priority: 9
+    reliability: 8
+    frequency: weekly
+    active: true
+    tags: [newsletter, culture, strategy craft]
+    notes: "Post Culture newsletter — culture and strategy POVs."
+
+  - name: After School
+    type: rss
+    category: newsletters
+    region: global
+    url: "https://news.google.com/rss/search?q=site:afterschool.substack.com&hl=en-US&gl=US&ceid=US:en"
+    priority: 9
+    reliability: 8
+    frequency: weekly
+    active: true
+    tags: [newsletter, youth culture, gen z, trends]
+    notes: "After School — youth-culture and Gen Z consumer trends."
+
+  - name: Because of Marketing
+    type: rss
+    category: newsletters
+    region: global
+    url: "https://news.google.com/rss/search?q=site:becauseofmarketing.substack.com&hl=en-US&gl=US&ceid=US:en"
+    priority: 9
+    reliability: 8
+    frequency: weekly
+    active: true
+    tags: [newsletter, marketing, campaigns]
+    notes: "Because of Marketing — campaign breakdowns and marketing ideas."
+
+  - name: Will Poskett
+    type: rss
+    category: newsletters
+    region: global
+    url: "https://news.google.com/rss/search?q=site:willposkett.substack.com&hl=en-US&gl=US&ceid=US:en"
+    priority: 9
+    reliability: 8
+    frequency: weekly
+    active: true
+    tags: [newsletter, strategy craft, planning]
+    notes: "Will Poskett's strategy newsletter."
+
+  # ------------------------------------------------------------- STRATEGY
 
   - name: Marketing Week
     type: rss

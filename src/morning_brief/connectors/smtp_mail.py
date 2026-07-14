@@ -6,8 +6,11 @@ App Password (https://myaccount.google.com/apppasswords).
 
 Env:
   SMTP_APP_PASSWORD  the 16-char app password (spaces are stripped)
-  SMTP_USER          the Gmail address to send from (defaults to BRIEF_RECIPIENT)
-  BRIEF_RECIPIENT    where to send (defaults to SMTP_USER)
+  SMTP_USER          the Gmail address to send from (defaults to the first
+                     BRIEF_RECIPIENT; must be the account the app password
+                     belongs to)
+  BRIEF_RECIPIENT    where to send — one or more, comma-separated
+                     (defaults to SMTP_USER)
   SMTP_HOST          default smtp.gmail.com
   SMTP_PORT          default 465 (SSL)
 
@@ -25,15 +28,21 @@ from ..utils.logging import get_logger
 log = get_logger()
 
 
+def recipients(raw: str | None = None) -> list[str]:
+    """Split a comma-separated recipient string into addresses."""
+    raw = raw if raw is not None else (env("BRIEF_RECIPIENT") or env("SMTP_USER"))
+    return [a.strip() for a in (raw or "").split(",") if a.strip()]
+
+
 def configured() -> bool:
     return bool(env("SMTP_APP_PASSWORD") and (env("SMTP_USER") or env("BRIEF_RECIPIENT")))
 
 
 def send_email(subject: str, html_body: str, to: str | None = None) -> bool:
     password = env("SMTP_APP_PASSWORD")
-    user = env("SMTP_USER") or env("BRIEF_RECIPIENT")
-    to = to or env("BRIEF_RECIPIENT") or user
-    if not (password and user and to):
+    tos = recipients(to)
+    user = env("SMTP_USER") or (tos[0] if tos else None)
+    if not (password and user and tos):
         log.info("SMTP not configured; skipping SMTP send.")
         return False
     password = password.replace(" ", "")  # Gmail displays app passwords with spaces
@@ -43,12 +52,12 @@ def send_email(subject: str, html_body: str, to: str | None = None) -> bool:
         msg = MIMEText(html_body, "html", "utf-8")
         msg["Subject"] = subject
         msg["From"] = user
-        msg["To"] = to
+        msg["To"] = ", ".join(tos)
         ctx = ssl.create_default_context()
         with smtplib.SMTP_SSL(host, port, context=ctx) as server:
             server.login(user, password)
-            server.sendmail(user, [to], msg.as_string())
-        log.info("Brief emailed via SMTP to %s", to)
+            server.sendmail(user, tos, msg.as_string())
+        log.info("Brief emailed via SMTP to %s", ", ".join(tos))
         return True
     except Exception as exc:  # noqa: BLE001
         log.error("SMTP send failed: %s", exc)

@@ -66,6 +66,7 @@ sources, no AI synthesis. Add the key for the full written brief.
 | `brief preview [--out FILE] [--include-seen]` | Generate and print/write. No Notion, no email. |
 | `brief send` | Generate and email the brief. |
 | `brief save` | Generate and save to Notion. |
+| `brief weekly [--email] [--days N]` | Synthesise the past week's daily briefs into one wrap-up (the Friday scheduler runs this with `--email`). |
 | `brief sources validate` | Validate `config/sources.yaml`. |
 | `brief sources list` | List all sources with status/priority/reliability. |
 | `brief logs [-n N]` | Show today's log file. |
@@ -141,7 +142,19 @@ One OAuth client covers all three.
    GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=... python scripts/google_auth.py
    ```
    Paste the printed value into `GOOGLE_REFRESH_TOKEN`.
-4. Set `BRIEF_RECIPIENT` (defaults to your Gmail account).
+4. Set `BRIEF_RECIPIENT` — one or more addresses, comma-separated
+   (e.g. `you@gmail.com,teammate@example.com`). All recipients appear in the
+   To: line. With multiple recipients, keep `SMTP_USER` set to the single Gmail
+   account that owns the app password.
+
+> ⚠️ **Refresh tokens expire after 7 days while the OAuth app is in "Testing"
+> mode** (and OAuth Playground tokens expire regardless). If `brief test` shows
+> Google as not authenticated, or logs say `invalid_grant`, that's what
+> happened. Fix it permanently: Google Cloud Console → **APIs & Services →
+> OAuth consent screen → Publish app** (to "In production"), then re-run
+> `scripts/google_auth.py` with your own client id/secret and update
+> `GOOGLE_REFRESH_TOKEN` (in `.env` and in the GitHub Actions secrets).
+> Email *delivery* is unaffected — it uses the App Password, not OAuth.
 
 ### 4. NewsAPI (optional) — for `type: api` sources
 Get a key at <https://newsapi.org> → `NEWSAPI_KEY`.
@@ -163,7 +176,13 @@ daily, and on-demand from the Actions tab.
    `GOOGLE_REFRESH_TOKEN`, `BRIEF_RECIPIENT`, optionally `BRIEF_MODEL`,
    `NEWSAPI_KEY`).
 3. Done. It emails you each morning, archives to Notion, and uploads the brief +
-   logs as a run artifact. Dedupe memory persists between runs via Actions cache.
+   logs as a run artifact. Dedupe memory and the daily archives persist between
+   runs via Actions cache.
+
+`.github/workflows/weekly-brief.yml` additionally runs every **Friday at
+16:00 MYT** (`08:00 UTC`): it reads the week's daily briefs from the shared
+cache and emails a synthesised weekly wrap-up (themes, biggest stories,
+strategy takeaways). It needs no extra secrets beyond the email ones.
 
 ### Option B: local cron
 ```cron
@@ -182,12 +201,13 @@ src/morning_brief/
   config_loader.py         load + validate YAML
   models.py                Source, Item
   connectors/              rss · gmail · calendar · news · notion · google_auth
-  pipeline/                collect · dedupe · score · summarize · generate · deliver · seen_store
+  pipeline/                collect · dedupe · score · summarize · generate · weekly · deliver · seen_store
   utils/                   logging · dates · text
 scripts/google_auth.py     one-time Google refresh-token minter
 data/                       cache/ · logs/ · archive/ (git-ignored contents)
 tests/                      pytest suite
-.github/workflows/daily-brief.yml   the 07:00 MYT scheduler
+.github/workflows/daily-brief.yml    the 07:00 MYT daily scheduler
+.github/workflows/weekly-brief.yml   the Friday 16:00 MYT weekly wrap-up
 ```
 
 ---
@@ -210,7 +230,8 @@ tests/                      pytest suite
 | A source shows in logs as failed | Normal if a feed is down/blocked — the run continues. Check the URL, or `active: false` it. |
 | Brief is in "extractive mode" | Set `ANTHROPIC_API_KEY`. |
 | Nothing saved to Notion | Set `NOTION_API_KEY` + `NOTION_PARENT_PAGE_ID`, and **share the page with the integration**. |
-| Gmail/Calendar empty | Re-run `scripts/google_auth.py`; confirm both APIs are enabled; check `brief test`. |
+| Gmail/Calendar empty | Usually an expired refresh token (`invalid_grant` in logs) — publish the OAuth app to Production and re-mint via `scripts/google_auth.py` (see "Google setup"); confirm both APIs are enabled; check `brief test`. |
+| Weekly brief says no archives | It reads `data/archive/brief-*.md` from the shared Actions cache — it fills up as daily runs happen after this feature landed. |
 | Feed won't parse | Some "website" sources aren't real feeds — find the site's `/feed` or `/rss` URL. |
 | `sgmllib3k` build error on install | Environment-specific (old system setuptools). Use a fresh venv, or the app falls back to a built-in stdlib RSS parser. |
 | Wrong time | Set `TZ=Asia/Kuala_Lumpur`; the GitHub cron is already `23:00 UTC`. |

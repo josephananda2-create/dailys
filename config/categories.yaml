@@ -15,6 +15,13 @@ categories:
   strategy:
     section: strategy
     keywords: [strategy, brand building, effectiveness, planning, brief, positioning, behavioural science, semiotics]
+  # Personal newsletter subscriptions (Substacks). `pin_section: true` keeps them
+  # in the strategy radar's "From your newsletters" sub-group — content-based
+  # reclassification would otherwise scatter them across sections.
+  newsletters:
+    section: strategy
+    pin_section: true
+    keywords: [strategy, planning, brand, advertising, creative, culture, newsletter]
 
   global_economy:
     section: world

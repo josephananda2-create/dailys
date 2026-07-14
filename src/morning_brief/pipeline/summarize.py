@@ -31,6 +31,9 @@ quotes, or events. If something is not in the items, do not say it.
 - Be blunt when something is overhyped or strategically weak. No fluff, no \
 clickbait, no hype, no sycophancy toward any brand/agency/platform.
 - Keep "why it matters" concrete and specific — no filler.
+- Give each story real context BEFORE the "why": default to 2-3 plain sentences \
+of explanation (what happened, who's involved, the key numbers, any background \
+needed) so the reader never has to open the link to understand the story.
 - BALANCE: do not let one brand or category dominate. If several items are about \
 the same brand (e.g. one carmaker), pick the best ONE and move on. Spread \
 attention across what's provided.
@@ -56,17 +59,22 @@ Produce the brief with EXACTLY these sections and headings:
 
 ## 1. The 10 things you need to know today
 Ten most important items across everything (use the "top_picks" ids as a guide \
-but you may adjust for balance). Each: **Headline** — simple explanation — why it \
-matters — source link.
+but you may adjust for balance). Each: **Headline** — explanation in 2-3 plain \
+sentences giving real context (what happened, who's involved, the key numbers, \
+any background needed) — why it matters (1-2 concrete sentences) — source link.
 
 ## 2. Advertising and strategy radar
-Sub-group: **Advertising moves**, **Strategy thinking**, **Campaigns worth studying**, \
-**Tools or ways of working**. For each item: what happened / why it matters / how I \
-can use this in my work. For strategy items, extract the applicable THINKING, not just news.
+Sub-group: **Advertising moves**, **Strategy thinking**, **From your newsletters**, \
+**Campaigns worth studying**, **Tools or ways of working**. For each item: what \
+happened (2-3 sentences of context) / why it matters / how I can use this in my work. \
+For strategy items, extract the applicable THINKING, not just news. Items whose \
+category is "newsletters" go under **From your newsletters**: for each, name the \
+newsletter, give the core idea in 2-3 sentences, and the ONE thing worth stealing \
+for a brief or deck.
 
 ## 3. World radar
-Global business, politics, economics, markets, culture, tech. Each: explain simply / \
-why it matters / what to watch next.
+Global business, politics, economics, markets, culture, tech. Each: explain in 2-3 \
+plain sentences / why it matters / what to watch next.
 
 ## 4. Malaysia radar
 Same format, focused on Malaysia and useful for Malaysian brand strategy.
@@ -114,8 +122,8 @@ def render_with_llm(context: dict) -> str | None:
     model = env("BRIEF_MODEL") or "claude-sonnet-5"
     payload = json.dumps(context, ensure_ascii=False, indent=1)
     # Keep payload bounded to control cost/latency.
-    if len(payload) > 120_000:
-        payload = payload[:120_000] + "\n… (truncated)"
+    if len(payload) > 180_000:
+        payload = payload[:180_000] + "\n… (truncated)"
 
     try:
         client = anthropic.Anthropic(api_key=api_key)
