@@ -366,6 +366,49 @@ sources:
     tags: [ev, energy, tech]
     notes: "Global EV & clean-energy trends."
 
+  # Launch-heavy outlets feeding the "Car launches & teasers" section.
+  # Direct feeds 403 from cloud IPs — pull via Google News (links go to the
+  # original articles), same pattern as The Drum / Campaign Asia above.
+  - name: Carscoops
+    type: rss
+    category: automotive_launches
+    region: global
+    url: "https://news.google.com/rss/search?q=site:carscoops.com&hl=en-US&gl=US&ceid=US:en"
+    priority: 7
+    reliability: 7
+    frequency: daily
+    active: true
+    tags: [automotive, launches, teasers, spyshots, rumors]
+    notes: "Global new-car launches, teasers, spyshots and rumors."
+
+  - name: Motor1
+    type: rss
+    category: automotive_launches
+    region: global
+    url: "https://news.google.com/rss/search?q=site:motor1.com&hl=en-US&gl=US&ceid=US:en"
+    priority: 7
+    reliability: 7
+    frequency: daily
+    active: true
+    tags: [automotive, launches, debuts, first drives]
+    notes: "Global debuts, reveals and upcoming-model news."
+
+  # Malaysia launches — Paul Tan filtered to launch/teaser terms via Google News.
+  # priority:9 (above the general Paul Tan feed's 8) so when the same story is
+  # carried by both, THIS launch-categorised copy wins de-dup and lands in the
+  # launches section instead of the Malaysia radar.
+  - name: Paul Tan — launches (MY)
+    type: rss
+    category: automotive_launches
+    region: malaysia
+    url: "https://news.google.com/rss/search?q=site:paultan.org%20(launched%20OR%20teased%20OR%20teaser%20OR%20facelift%20OR%20debut%20OR%20%22open%20for%20booking%22%20OR%20%22world%20premiere%22)&hl=en-MY&gl=MY&ceid=MY:en"
+    priority: 9
+    reliability: 8
+    frequency: daily
+    active: true
+    tags: [automotive, malaysia, launches, teasers, ev]
+    notes: "Malaysian car launches/teasers (Paul Tan via Google News, launch-filtered)."
+
   # ------------------------------------------------------------- AI
   - name: Ars Technica AI
     type: rss

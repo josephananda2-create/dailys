@@ -13,10 +13,11 @@ def _item(title, section, category):
                 summary="short snippet", reliability=9, priority=8)
 
 
-def test_fallback_renders_all_ten_sections_even_when_empty():
+def test_fallback_renders_all_sections_even_when_empty():
     cfg = make_cfg()
     md = _render_fallback([], [], cfg, {"failed": []})
-    for heading in ["# Morning Brief", "## 1.", "## 5.", "## 8.", "## 10."]:
+    for heading in ["# Morning Brief", "## 1.", "## 5.", "## 6. Car launches",
+                    "## 8.", "## 11."]:
         assert heading in md
 
 

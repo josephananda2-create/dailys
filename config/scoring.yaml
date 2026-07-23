@@ -43,6 +43,7 @@ section_caps:
   world: 6
   malaysia: 6
   client_category: 8
+  car_launches: 6
   ai: 5
   sports: 6
   day_ahead: 99   # never cap the user's own day

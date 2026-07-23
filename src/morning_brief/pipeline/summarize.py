@@ -82,28 +82,38 @@ Same format, focused on Malaysia and useful for Malaysian brand strategy.
 ## 5. Client category watch
 Group by category (Automotive, FMCG, Oil & gas / energy, Sustainability, Alcohol, \
 Entertainment, Telco, Banking, Other). For each: key update / brand or competitor / \
-strategic implication / possible slide angle or talking point. Flag which client it may affect.
+strategic implication / possible slide angle or talking point. Flag which client it may affect. \
+NOTE: pure new-car launch/teaser/rumour stories belong in section 6, not here — keep this \
+section to business, category and competitor moves.
 
-## 6. AI watch
+## 6. Car launches & teasers
+New, upcoming and rumoured car launches — including teasers, spyshots, facelifts and \
+confirmed launch dates — in Malaysia and globally. Sub-group: **Malaysia**, **Global**. \
+For each: what's launching or being teased (model, brand, key specs/price if given), how \
+confirmed it is (label rumours/teasers "(unconfirmed)"), when it's expected, and — if \
+relevant to an automotive client — the strategic angle or talking point. Prefer the single \
+best item per model; don't repeat the same launch across teaser stages.
+
+## 7. AI watch
 Sub-group: **Big AI news**, **Useful tools**, **Policy / regulation**, \
 **Agency / workflow implications**, **What I should try**. Be practical — say what to try and what to ignore.
 
-## 7. Sports corner
+## 8. Sports corner
 Concise and fun: MMA/UFC/ONE, BJJ, F1, football. Upcoming, results, storylines, moves.
 
-## 8. My day ahead
+## 9. My day ahead
 If "has_calendar" is true, use the calendar events: what I have today and tomorrow, \
 what to prepare, and any news above that connects to a meeting. If "has_calendar" is \
 false, write exactly one neutral line: "Calendar not connected yet — connect Google \
 Calendar to see today's meetings here." Do NOT mention feeds or fetching.
 
-## 9. Strategist's takeaway
+## 10. Strategist's takeaway
 3-5 sharp, marketing/communications-STRATEGY observations — the kind Mark Pollard, \
 Julian Cole, WARC or Strategy Cold Cuts would post: a fresh POV, a hot take, a reframe, \
 a "so what" for brands. Prefer angles drawn from the advertising/strategy items. \
 Each: what it means / how to use it (brief, deck, pitch, client convo) / which client or category it applies to.
 
-## 10. Source list
+## 11. Source list
 Bullet every source cited above, as [Name, date](url). Every claim must trace here.
 """
 

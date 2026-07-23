@@ -18,6 +18,7 @@ SECTION_TITLES = {
     "world": "World",
     "malaysia": "Malaysia",
     "client_category": "Client category watch",
+    "car_launches": "Car launches & teasers",
     "ai": "AI",
     "sports": "Sports",
     "day_ahead": "My day ahead",
@@ -83,8 +84,9 @@ def _render_fallback(scored: list[Item], events: list[Item], cfg: Config, report
         ("world", "## 3. World radar"),
         ("malaysia", "## 4. Malaysia radar"),
         ("client_category", "## 5. Client category watch"),
-        ("ai", "## 6. AI watch"),
-        ("sports", "## 7. Sports corner"),
+        ("car_launches", "## 6. Car launches & teasers"),
+        ("ai", "## 7. AI watch"),
+        ("sports", "## 8. Sports corner"),
     ]
     for sec, header in order:
         if header:
@@ -110,7 +112,7 @@ def _render_fallback(scored: list[Item], events: list[Item], cfg: Config, report
             out.append("- Nothing that clears the bar today.")
         out.append("")
 
-    out.append("## 8. My day ahead")
+    out.append("## 9. My day ahead")
     if events:
         for e in events:
             loc = e.extra.get("location", "")
@@ -120,11 +122,11 @@ def _render_fallback(scored: list[Item], events: list[Item], cfg: Config, report
         out.append("- No calendar connected, or nothing scheduled.")
     out.append("")
 
-    out.append("## 9. Strategist's takeaway")
+    out.append("## 10. Strategist's takeaway")
     out.append("- _(LLM disabled — takeaways are synthesised only when `ANTHROPIC_API_KEY` is set.)_")
     out.append("")
 
-    out.append("## 10. Source list")
+    out.append("## 11. Source list")
     seen = set()
     all_items = [i for lst in sections.values() for i in lst] + picks
     for i in all_items:

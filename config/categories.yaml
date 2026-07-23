@@ -46,6 +46,18 @@ categories:
   automotive:
     section: client_category
     keywords: [car, automotive, vehicle, oem, dealership, proton, perodua]
+  # New/upcoming/rumored car launches, teasers and spyshots get their own
+  # section so they never compete with FMCG/telco/banking for space.
+  # `pin_section: true` keeps these items in the launches section — without it,
+  # the heavily-weighted "malaysia" keyword (in 3 categories) would drag MY
+  # launch stories into the Malaysia radar. Keywords stay auto-specific (no bare
+  # "launch"/"unveil") so ad-campaign launches and film teasers aren't pulled in.
+  automotive_launches:
+    section: car_launches
+    pin_section: true
+    keywords: [facelift, spyshot, spy shots, test mule, world premiere, global debut,
+               open for booking, order books, car launch, ev launch, suv launch,
+               new model, all-new, launch date, pre-order, ckd, right-hand drive]
   evs:
     section: client_category
     keywords: [ev, electric vehicle, charging, battery, byd, tesla]
@@ -122,7 +134,8 @@ watchlist:
   - client: "Automotive client"
     category: automotive
     brands: [Proton, Perodua, Toyota, Honda, BYD, Tesla]
-    competitors: [Mazda, Nissan, Chery]
+    competitors: [Mazda, Nissan, Chery, Geely, Jaecoo, GWM, Haval, Xpeng, Zeekr,
+                  Hyundai, Kia, Mitsubishi, Leapmotor, Denza]
   - client: "Energy / petrol client"
     category: petrol_retail
     brands: [Petronas, Shell, BHPetrol, Caltex]
